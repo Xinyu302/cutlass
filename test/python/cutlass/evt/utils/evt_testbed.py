@@ -106,7 +106,8 @@ class EVTTestBed:
         self.example_inputs = example_inputs
         
         # Create the Gemm plan
-        self.plan = cutlass.op.Gemm(element=element, layout=layout, element_accumulator=torch.float32)
+        # self.plan = cutlass.op.Gemm(element=element, layout=layout, element_accumulator=torch.float32)
+        self.plan = cutlass.Gemm(element=element, layout=layout, element_accumulator=torch.float32)
         
         if "tile_description" in kwargs:
             self.plan.tile_description = kwargs["tile_description"]

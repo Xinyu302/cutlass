@@ -106,9 +106,11 @@ class EVTFrontendBase:
     def trace(self, *args, **kwargs):
         # Parse the input
         self.parse(*args, **kwargs)
+        self.visualize("origin_ir")
 
         # Run the passes
         self.pass_manager()
+        self.visualize("result_ir")
         # Set the epilogue type
         self.epilogue_thread_type = self.dag_ir.epilogue_thread_type
         if self.cc == 90:

@@ -41,6 +41,8 @@ import networkx as nx
 from cutlass.backend.evt.ir import DAGIR
 from cutlass.backend.evt.passes.util import cc_map
 
+from cutlass.backend.evt.passes import EVTGraphDrawer
+
 
 class EVTPassBase:
     """
@@ -162,3 +164,21 @@ class EVTPassManager(nx.DiGraph):
         for pass_name in self.sorted_passes:
             callable = self.get_callable(pass_name)
             callable()
+            print(pass_name)
+            self.visualize(pass_name)
+
+
+    def visualize(self, name="dag_ir"):
+        """
+        Visualize the dag ir with svg file
+        :param name: the name of the graph
+        """
+        drawer = EVTGraphDrawer(self.dag_ir, name)
+        try:
+            for name, graph in drawer.get_dot_graph():
+                graph.write_svg(f"./{name}.svg")
+        except:
+            raise RuntimeError(
+                "'dot' is not found in path. GraphDrawer is disabled. "
+                "Please install it with 'sudo apt-get install graphviz'."
+            )
